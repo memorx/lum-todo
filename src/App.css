@@ -36,3 +36,41 @@
     transform: rotate(360deg);
   }
 }
+
+/** Components **/
+
+.todoList {
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.listItem {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.listItem.completed {
+  text-decoration: line-through;
+}
+
+.listItem .category {
+  margin-left: 5px;
+  padding: 3px;
+  border: 1px solid #000;
+}
+
+.checkbox {
+  border-radius: 15px;
+  margin-right: 3px;
+}
+
+.categoryDropdown {
+  margin-right: 10%;
+  float: right;
+}
+
+.title {
+  text-decoration: underline;
+}
+
+
