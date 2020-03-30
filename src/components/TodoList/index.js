@@ -1,18 +1,31 @@
-import React, {useState, useEffect} from 'react'
-import MockTodoItems from '../../data/MockTodoItems';
-import MockCategories from '../../data/MockCategories'
+import React, {useState, useEffect} from 'react';
+import { connect } from 'react-redux';
 import { TodoItem } from '../TodoItem';
 import { AddTodoItem } from '../AddTodoItem';
+import { addTodoItem, addCategory } from '../../js/actions/index'
+ 
+const mapStateToProps = state => {
+    return { 
+        todoItems: state.todoItems,
+        categories: state.categories
+    }
+}
 
+const mapDispatchToProps= dispatch => {
+    return {
+        addTodoList: todoList => dispatch(addTodoItem(todoList)),
+        addCategory: category => dispatch(addCategory(category))
+    }
+}
 
-const TodoList = () => {
-    const [todoItems, setTodoItems] = useState(MockTodoItems);
-    const [filteredTodoItems, setFilteredTodoItems] = useState(todoItems);
+const ConnectedTodoList = (props) => {
+    //const [todoItems, setTodoItems] = useState(props.todoItems);
+    const [filteredTodoItems, setFilteredTodoItems] = useState(props.todoItems);
     const [filter, setFilter] = useState('');
 
     useEffect(() => {
-        filterTodos(todoItems, filter);
-    },[todoItems, filter])
+        filterTodos(props.todoItems, filter);
+    },[props.todoItems, filter])
     
     const filterTodos = (allTodoItems, selectedCategory) => {
         if (selectedCategory !== '') 
@@ -27,16 +40,21 @@ const TodoList = () => {
 
     const handleSubmit = (name, category) => {
         const newItem = {name, category, completed: false};
-        setTodoItems(oldArray => [...oldArray, newItem]);
+        props.addTodoList(newItem);
+        
+        const categoryExist = props.categories.find(categoryItem => categoryItem === category);
+        if (!categoryExist) {
+            props.addCategory(category);
+        }
     } 
 
     return <div className='todoList'>
         <div className='title'>Todo</div>
         <div className='categoryDropdown'>
             <select onChange={onHandleChangeCategory}>
-                <option value='' selected >No category</option>
-                {MockCategories.map(category => 
-                    <option value={category}>{category}</option>
+                <option value='' defaultValue >No category</option>
+                {props.categories.map(category => 
+                    <option key={category} value={category}>{category}</option>
                 )}
             </select>
         </div>      
@@ -44,5 +62,8 @@ const TodoList = () => {
         <div><AddTodoItem onHandleSubmit={handleSubmit}/></div>
     </div>;
 }
+
+
+const TodoList = connect(mapStateToProps, mapDispatchToProps)(ConnectedTodoList)
 
 export default TodoList;

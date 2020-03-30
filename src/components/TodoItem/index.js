@@ -4,7 +4,7 @@ export const TodoItem = (props) => {
     const {name, category, completed} = props.item;
     const [taskCompleted, setTaskCompleted] = useState(completed);
 
-    const handleInputChange = (event) => {
+    const handleInputChange = () => {
         setTaskCompleted(!taskCompleted);
     }
 
