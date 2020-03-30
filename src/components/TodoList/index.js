@@ -40,11 +40,15 @@ const ConnectedTodoList = (props) => {
 
     const handleSubmit = (name, category) => {
         const newItem = {name, category, completed: false};
-        props.addTodoList(newItem);
         
-        const categoryExist = props.categories.find(categoryItem => categoryItem === category);
-        if (!categoryExist) {
-            props.addCategory(category);
+        const itemExist = props.todoItems.find(item => item.name === name);
+        if (!itemExist) {
+            props.addTodoList(newItem);
+        
+            const categoryExist = props.categories.find(categoryItem => categoryItem === category);
+            if (!categoryExist) {
+                props.addCategory(category);
+            }
         }
     } 
 

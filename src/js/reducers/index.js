@@ -1,5 +1,6 @@
-import { ADD_TODO_ITEM } from "../constants/action-types"
-import { ADD_CATEGORY } from "../constants/action-types"
+import { ADD_TODO_ITEM } from "../constants/action-types";
+import { ADD_CATEGORY } from "../constants/action-types";
+import { TOOGLE_TASK } from "../constants/action-types"
 
 const initialState = {
     todoItems: [{
@@ -29,6 +30,17 @@ function rootReducer(state = initialState, action) {
         return Object.assign({}, state, {
             categories: state.categories.concat(action.payload)
         });
+    }
+
+
+    if (action.type === TOOGLE_TASK) {
+        return { 
+            ...state, 
+            todoItems: state.todoItems.map(
+                (todoItem, i) => i === 1 ? 
+                    {...todoItem, completed: action.payload}: todoItem
+            )
+         }
     }
 
     return state;
